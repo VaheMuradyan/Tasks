@@ -1,0 +1,23 @@
+curl -X POST https://skylinev88871.uat1.evo-test.com/ua/v1/skylinev88871001/test123 \
+-x http://goproxy.u1s1.biz:16600 \
+-H "Content-Type: application/json" \
+-d '{
+  "uuid": "unique request identifier",
+  "player": {
+    "id": "a1a2a3a4",
+    "update": true,
+    "nickname": "nickname",
+    "language": "en-GB",
+    "currency": "EUR",
+    "session": {
+      "id": "111ssss3333rrrrr45555",
+      "ip": "109.75.37.87"
+    }
+  },
+  "config": {
+    "brand": {
+      "id": "1",
+      "skin": "1"
+    }
+  }
+}'
