@@ -9,6 +9,15 @@ import (
 	"time"
 )
 
+type GameResponse struct {
+	Entry         string        `json:"entry"`
+	EntryEmbedded EntryEmbedded `json:"entryEmbedded"`
+}
+
+type EntryEmbedded struct {
+	EntryParams string `json:"entryParams"`
+}
+
 type RequestBody struct {
 	UUID   string       `json:"uuid"`
 	Player PlayerInfo   `json:"player"`
@@ -16,7 +25,7 @@ type RequestBody struct {
 }
 
 type PlayerInfo struct {
-	ID       string        `json:"id"`
+	Id       string        `json:"id"`
 	Update   bool          `json:"update"`
 	Nickname string        `json:"nickname"`
 	Language string        `json:"language"`
@@ -25,8 +34,8 @@ type PlayerInfo struct {
 }
 
 type SessionParams struct {
-	ID string `json:"id"`
-	IP string `json:"ip"`
+	Id string `json:"id"`
+	Ip string `json:"ip"`
 }
 
 type ConfigParams struct {
@@ -39,13 +48,13 @@ type BrandParams struct {
 }
 
 func main() {
-	ok, err := authenticateUser()
+	resp, err := authenticateUser()
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
 		return
 	}
 
-	fmt.Printf("Game URL: %s\n", ok)
+	fmt.Printf("Game response: %s\n", resp)
 }
 
 func authenticateUser() (string, error) {
@@ -65,14 +74,14 @@ func authenticateUser() (string, error) {
 	reqBody := RequestBody{
 		UUID: "unique request identifier",
 		Player: PlayerInfo{
-			ID:       "a1a2a3a4",
+			Id:       "a1a2a3a4",
 			Update:   true,
 			Nickname: "nickname",
 			Language: "en-GB",
 			Currency: "EUR",
 			Session: SessionParams{
-				ID: "111ssss3333rrrrr45555",
-				IP: "109.75.37.87",
+				Id: "111ssss3333rrrrr45555",
+				Ip: "109.75.37.87",
 			},
 		},
 		Config: ConfigParams{
@@ -105,12 +114,13 @@ func authenticateUser() (string, error) {
 		return "", fmt.Errorf("server returned non-200 status: %s", resp.Status)
 	}
 
-	var responseBody map[string]interface{}
-	if err := json.NewDecoder(resp.Body).Decode(&responseBody); err != nil {
+	var gameResponse GameResponse
+	if err := json.NewDecoder(resp.Body).Decode(&gameResponse); err != nil {
 		return "", fmt.Errorf("error parsing response: %v", err)
 	}
 
-	fmt.Printf("Response Body: %+v\n", responseBody)
+	fmt.Printf("Game URL: %s\n", gameResponse.Entry)
+	fmt.Printf("Embedded Entry Params: %s\n", gameResponse.EntryEmbedded.EntryParams)
 
-	return "OK", nil
+	return gameResponse.Entry, nil
 }
