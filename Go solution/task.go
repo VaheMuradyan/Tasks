@@ -10,12 +10,8 @@ import (
 )
 
 type GameResponse struct {
-	Entry         string        `json:"entry"`
-	EntryEmbedded EntryEmbedded `json:"entryEmbedded"`
-}
-
-type EntryEmbedded struct {
-	EntryParams string `json:"entryParams"`
+	Entry         string `json:"entry"`
+	EntryEmbedded string `json:"entryEmbedded"`
 }
 
 type RequestBody struct {
@@ -114,13 +110,12 @@ func authenticateUser() (string, error) {
 		return "", fmt.Errorf("server returned non-200 status: %s", resp.Status)
 	}
 
-	var gameResponse GameResponse
-	if err := json.NewDecoder(resp.Body).Decode(&gameResponse); err != nil {
+	var response GameResponse
+	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
 		return "", fmt.Errorf("error parsing response: %v", err)
 	}
 
-	fmt.Printf("Game URL: %s\n", gameResponse.Entry)
-	fmt.Printf("Embedded Entry Params: %s\n", gameResponse.EntryEmbedded.EntryParams)
+	fmt.Printf("string %s", response.Entry)
 
-	return gameResponse.Entry, nil
+	return "ok", nil
 }
