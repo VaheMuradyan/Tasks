@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/VaheMuradyan/Tasks/go-crud/initializers"
-	"github.com/VaheMuradyan/Tasks/go-crud/models"
+	"github.com/VaheMuradyan/Tasks/gin-gorm-crud/initializers"
+	"github.com/VaheMuradyan/Tasks/gin-gorm-crud/models"
 )
 
 func init() {

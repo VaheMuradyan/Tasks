@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/VaheMuradyan/Tasks/go-crud/controllers"
-	"github.com/VaheMuradyan/Tasks/go-crud/initializers"
+	"github.com/VaheMuradyan/Tasks/gin-gorm-crud/controllers"
+	"github.com/VaheMuradyan/Tasks/gin-gorm-crud/initializers"
 	"github.com/gin-gonic/gin"
 )
 
