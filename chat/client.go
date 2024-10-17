@@ -50,7 +50,6 @@ func serveWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 	go client.readPump()
 }
 
-// Reads from Hub to the websocket
 func (c *Client) writePump() {
 	ticker := time.NewTicker(pingPeriod)
 
@@ -64,7 +63,7 @@ func (c *Client) writePump() {
 		case msg, ok := <-c.send:
 			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
 			if !ok {
-				// The hub closed the channel.
+
 				c.conn.WriteMessage(websocket.CloseMessage, []byte{})
 				return
 			}
@@ -76,7 +75,6 @@ func (c *Client) writePump() {
 
 			w.Write(msg)
 
-			// Add queued chat messages to the current websocket message.
 			n := len(c.send)
 			for i := 0; i < n; i++ {
 				w.Write(msg)
@@ -95,7 +93,6 @@ func (c *Client) writePump() {
 	}
 }
 
-// Reads from WS connection
 func (c *Client) readPump() {
 	defer func() {
 		c.hub.unregister <- c

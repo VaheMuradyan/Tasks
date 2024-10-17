@@ -55,19 +55,19 @@ func (h *Handler) Login(c *gin.Context) {
 	var req LoginUserReq
 
 	if err := c.BindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Faild to read body"})
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": "Faild to read body"})
 		return
 	}
 	var user User
 	h.db.First(&user, "email = ?", req.Email)
 
 	if user.ID == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid email or password"})
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": "Invalid email or password"})
 		return
 	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password)); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid email or password"})
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": "Invalid email or password"})
 		return
 	}
 
@@ -79,7 +79,7 @@ func (h *Handler) Login(c *gin.Context) {
 	tokenString, err := token.SignedString([]byte("alksdjf9182374laksjdfh"))
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid tou create token"})
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": "Invalid tou create token"})
 		return
 	}
 
